@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // ដាក់ import នេះមកវិញ
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_pos/feature/screens/check_session/check_session_screen.dart';
 
 void main() {
