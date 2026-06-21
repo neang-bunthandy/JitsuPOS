@@ -59,6 +59,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       backgroundColor: const Color(0xFFFAFAFC),
       appBar: AppBar(
         leading: IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+            ).then((_) {
+              _loadReportData();
+            });
+          },
+        ),
+        title: Text(
+          'Admin Dashboard',
+          style: AppFonts.enHeading3.copyWith(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadReportData,
+          ),
+          IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await SessionManager.clearSession();
@@ -70,26 +90,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               }
             },
           ),
-        title: Text(
-          'Admin Dashboard',
-          style: AppFonts.enHeading3.copyWith(color: Colors.white),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadReportData,
-          ),
-          IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SettingsScreen()),
-            ).then((_) {
-              _loadReportData();
-            });
-          },
-        ),
         ],
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -251,12 +251,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       ),
                     ),
                   ),
-                  Container(
+                  Material(
                     clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(color: Colors.black12, width: 1.0),
+                      side: const BorderSide(color: Colors.black12, width: 1.0),
                     ),
                     child: Column(
                       children: [
