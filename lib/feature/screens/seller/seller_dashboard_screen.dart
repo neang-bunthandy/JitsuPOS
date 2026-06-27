@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:project_pos/core/app_fonts.dart';
 import 'package:project_pos/core/app_colors.dart';
 import 'package:project_pos/data/local_data.dart';
@@ -72,12 +72,14 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
 
   Future<void> _scanBarcode() async {
     try {
-      final String scannedCode = await FlutterBarcodeScanner.scanBarcode(
-        '#0000ff',
-        'បោះបង់',
-        true,
-        ScanMode.BARCODE,
+      var res = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const BarcodeScannerScreen(),
+        ),
       );
+      
+      final String scannedCode = res is String ? res : '-1';
 
       if (scannedCode == '-1' || !mounted) return;
 
@@ -502,6 +504,41 @@ class _SellerDashboardScreenState extends State<SellerDashboardScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BarcodeScannerScreen extends StatefulWidget {
+  const BarcodeScannerScreen({super.key});
+
+  @override
+  State<BarcodeScannerScreen> createState() => _BarcodeScannerScreenState();
+}
+
+class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
+  bool _isScanned = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ស្កេនបាកូដ', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+      body: MobileScanner(
+        onDetect: (capture) {
+          if (_isScanned) return;
+          final List<Barcode> barcodes = capture.barcodes;
+          for (final barcode in barcodes) {
+            if (barcode.rawValue != null) {
+              _isScanned = true;
+              Navigator.pop(context, barcode.rawValue);
+              break;
+            }
+          }
+        },
       ),
     );
   }
